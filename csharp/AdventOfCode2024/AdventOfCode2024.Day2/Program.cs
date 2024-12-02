@@ -10,6 +10,14 @@ public static class Program
                     .ToArray())
             .Count(SequenceIsSafe);
     
+    public static int Part2(string filename) =>
+        File.ReadAllLines(filename)
+            .Select(line =>
+                line.Split(' ')
+                    .Select(int.Parse)
+                    .ToArray())
+            .Count(SequenceIsDampenerSafe);
+    
     private static bool SequenceIsSafe(int[] numbers)
     {
         var isSafe = true;
@@ -40,5 +48,25 @@ public static class Program
         }
 
         return isSafe;
+    }
+    
+    private static bool SequenceIsDampenerSafe(int[] numbers)
+    {
+        if (SequenceIsSafe(numbers))
+        {
+            return true;
+        }
+        
+        for(var i = 0; i < numbers.Length; i++)
+        {
+            var newNumbers = numbers.Take(i).Concat(numbers.Skip(i + 1)).ToArray();
+            
+            if(SequenceIsSafe(newNumbers))
+            {
+                return true;
+            }
+        }
+        
+        return false;
     }
 }
