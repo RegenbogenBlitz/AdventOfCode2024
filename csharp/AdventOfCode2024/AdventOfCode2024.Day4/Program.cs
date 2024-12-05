@@ -55,4 +55,46 @@ public static class Program
         
         return total;
     }
+
+    public static int Part2(string filename)
+    {
+        var lines = File.ReadAllLines(filename);
+        var total = 0;
+
+        var height = lines.Length;
+        var width = lines[0].Length;
+        for (var i = 0; i < height; i++)
+        {
+            var line = lines[i];
+            for (var j = 0; j < width; j++)
+            {
+                var c = line[j];
+                if (c == 'A' && i >= 1 && height - i > 1 && j >= 1 && width - j > 1)
+                {
+                    var char1 = lines[i - 1][j - 1];
+                    var char2 = lines[i - 1][j + 1];
+                    var char3 = lines[i + 1][j + 1];
+                    var char4 = lines[i + 1][j - 1];
+                    if (char1 == 'M' && char2 == 'M' && char3 == 'S' && char4 == 'S')
+                    {
+                        total++;
+                    }
+                    else if (char1 == 'S' && char2 == 'M' && char3 == 'M' && char4 == 'S')
+                    {
+                        total++;
+                    }
+                    else if (char1 == 'S' && char2 == 'S' && char3 == 'M' && char4 == 'M')
+                    {
+                        total++;
+                    }
+                    else if (char1 == 'M' && char2 == 'S' && char3 == 'S' && char4 == 'M')
+                    {
+                        total++;
+                    }
+                }
+            }
+        }
+
+        return total;
+    }
 }
