@@ -12,6 +12,14 @@ public static class Program
     
     public static int Part1(string filename)
     {
+        var (grid, position, direction) = GetOriginalSetup(filename);
+
+        var result = CountPositions(grid, position, direction);
+        return result.count;
+    }
+
+    private static (bool[][] grid, (int x, int y), Direction direction) GetOriginalSetup(string filename)
+    {
         var lines = File.ReadAllLines(filename);
 
         var height = lines.Length;
@@ -35,12 +43,27 @@ public static class Program
             }
         }
 
+        return (grid, position, direction);
+    }
+
+    private static (int count, IReadOnlyCollection<(int x, int y)> visitedPositions) CountPositions(bool[][] grid, (int x, int y) position, Direction direction)
+    {
+        var width = grid.Length;
+        var height = grid[0].Length;
+        
         bool IsInBounds(int x, int y) => x >= 0 && x < width && y >= 0 && y < height;
         
         var positions = new HashSet<(int x, int y)>();
+        var states = new HashSet<(int x, int y, Direction direction)>();
         while (IsInBounds(position.x, position.y))
         {
+            if(!states.Add((position.x, position.y, direction)))
+            {
+                return (-1, positions);
+            }
+
             positions.Add(position);
+            
             switch (direction)
             {
                 case Direction.Up:
@@ -96,6 +119,6 @@ public static class Program
             }
         }
 
-        return positions.Count;
+        return (positions.Count, positions);
     }
 }
