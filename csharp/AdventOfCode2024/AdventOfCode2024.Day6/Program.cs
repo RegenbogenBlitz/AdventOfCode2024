@@ -17,6 +17,32 @@ public static class Program
         var result = CountPositions(grid, position, direction);
         return result.count;
     }
+    
+    public static int Part2(string filename)
+    {
+        var (grid, startPosition, startDirection) = GetOriginalSetup(filename);
+
+        var result = CountPositions(grid, startPosition, startDirection);
+
+        var total = 0;
+        foreach (var visitedPosition in result.visitedPositions)
+        {
+            if(startPosition == visitedPosition)
+            {
+                continue;
+            }
+            
+            grid[visitedPosition.x][visitedPosition.y] = true;
+            var newResult = CountPositions(grid, startPosition, startDirection);
+            if (newResult.count == -1)
+            {
+                total++;
+            }
+            grid[visitedPosition.x][visitedPosition.y] = false;
+        }
+        
+        return total;
+    }
 
     private static (bool[][] grid, (int x, int y), Direction direction) GetOriginalSetup(string filename)
     {

@@ -17,4 +17,20 @@ public class Tests
 
         Assert.That(total, Is.EqualTo(4711));
     }
+    
+    [Test]
+    public void Part2Example()
+    {
+        var total = Program.Part2("example1.txt");
+        
+        Assert.That(total, Is.EqualTo(6));
+    }
+
+    [Test]
+    public void Part2Solution()
+    {
+        var total = Program.Part2("input.txt");
+
+        Assert.That(total, Is.EqualTo(1562));
+    }
 }
