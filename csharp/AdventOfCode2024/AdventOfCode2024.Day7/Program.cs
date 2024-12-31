@@ -4,6 +4,16 @@ public static class Program
 {
     public static long Part1(string filename)
     {
+        return Calculate(filename, false);
+    }
+    
+    public static long Part2(string filename)
+    {
+        return Calculate(filename, true);
+    }
+
+    public static long Calculate(string filename, bool hasConcatOperator)
+    {
         var lines = File.ReadAllLines(filename);
 
         long total = 0;
@@ -20,14 +30,25 @@ public static class Program
             {
                 foreach(var possible in possibles)
                 {
-                    if (possible + inputs[i] <= target)
+                    var sum = possible + inputs[i];
+                    if (sum <= target)
                     {
-                        nextPossibles.Add(possible + inputs[i]);
+                        nextPossibles.Add(sum);
                     }
                     
-                    if (possible * inputs[i] <= target)
+                    var product = possible * inputs[i];
+                    if (product <= target)
                     {
-                        nextPossibles.Add(possible * inputs[i]);
+                        nextPossibles.Add(product);
+                    }
+                    
+                    if (hasConcatOperator)
+                    {
+                        var concat = long.Parse(possible.ToString() + inputs[i].ToString());
+                        if (hasConcatOperator && concat <= target)
+                        {
+                            nextPossibles.Add(concat);
+                        }
                     }
                 }
                 possibles = nextPossibles;
